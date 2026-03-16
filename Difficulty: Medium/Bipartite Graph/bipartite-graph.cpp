@@ -1,23 +1,14 @@
 class Solution {
     
   private:
-    bool check(int node, int V, vector<vector<int>> &adj, vector<int>& colors){
-        queue<int> q;
-        q.push(node);
-        colors[0] = 0;
+    bool dfs(int node,int curr, vector<vector<int>>& adj, vector<int>& color){
+        color[node] = curr;
         
-        
-        while(!q.empty()){
-            int node = q.front();
-            q.pop();
-            
-            for(auto it : adj[node]){
-                if(colors[it] == -1){
-                    colors[it] = !colors[node];
-                    q.push(it);
-                } else if(colors[node] == colors[it]){
-                    return false;
-                }
+        for(auto it : adj[node]){
+            if(color[it] == -1){
+                if(dfs(it, !curr, adj, color) == false) return false;
+            } else if (color[it] == curr){
+                return false;
             }
         }
         return true;
@@ -26,9 +17,7 @@ class Solution {
   public:
     bool isBipartite(int V, vector<vector<int>> &edges) {
         // Code here
-        vector<int> colors(V, -1);
         vector<vector<int>> adj(V);
-        
         for(int i=0; i<edges.size(); i++){
             int u = edges[i][0];
             int v = edges[i][1];
@@ -37,9 +26,11 @@ class Solution {
             adj[v].push_back(u);
         }
         
+        vector<int> color(V, -1);
+        
         for(int i=0; i<V; i++){
-            if(colors[i] == -1){
-                if(check(i, V, adj, colors) == false) return false;
+            if(color[i] == -1){
+                if(dfs(i, 0, adj, color) == false) return false;
             }
         }
         
