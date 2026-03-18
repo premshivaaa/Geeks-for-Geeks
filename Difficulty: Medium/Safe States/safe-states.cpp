@@ -1,50 +1,29 @@
 class Solution {
-    
-  private:
-    bool dfs(int node, vector<vector<int>>& adj, vector<int>& vis, vector<int>& check){
-        vis[node] = 2;
-        check[node] = 0;
-        
-        for(auto it : adj[node]){
-            if(vis[it] == 0){
-                if(dfs(it, adj, vis, check) == true) return true;
-            } else if (vis[it] == 2){
-                return true;
-            }
-        }
-        
-        vis[node] = 1;
-        check[node] = 1;
-        return false;
-    }
-    
   public:
     vector<int> safeNodes(int V, vector<vector<int>>& edges) {
-        
         vector<vector<int>> adj(V);
+        vector<int> indegree(V);
+        queue<int> q;
         
-        for(int i=0; i<edges.size(); i++){
-            int u = edges[i][0];
-            int v = edges[i][1];
+        for(auto it : edges){
+            adj[it[1]].push_back(it[0]);
+            indegree[it[0]]++;
+        }
+        for(int i=0; i<V; i++){
+            if(indegree[i] == 0){
+                q.push(i);
+            }
+        }
+        vector<int> topo;
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+            topo.push_back(node);
             
-            adj[u].push_back(v);
-        }
-        vector<int> vis(V, 0);
-        vector<int> check(V, 0);
-        
-        for(int i=0; i<V; i++){
-            if(!vis[i]){
-                dfs(i, adj, vis, check);
+            for(auto it : adj[node]){
+                if(--indegree[it] == 0) q.push(it);
             }
         }
-        vector<int> safeNodes;
-        
-        for(int i=0; i<V; i++){
-            if(check[i]){
-                safeNodes.push_back(i);
-            }
-        }
-        
-        return safeNodes;
+        return topo;
     }
 };
