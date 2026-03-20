@@ -1,48 +1,51 @@
 class Solution {
     
   private:
-    vector<int> toposort(int n, vector<vector<int>>& adj){
-        vector<int> indegree(n, 0);
-        vector<int> topo;
-        queue<int> q;
+    vector<int> topoSort(int V, vector<vector<int>>& adj) {
         
-        for(int i=0; i<n; i++){
+        vector<int> indegree(V, 0);
+        for(int i=0; i<V; i++){
             for(auto it : adj[i]){
                 indegree[it]++;
             }
         }
-        for(int i=0; i<n; i++){
+        
+        queue<int> q;
+        for(int i=0; i<V; i++){
             if(indegree[i] == 0){
                 q.push(i);
             }
         }
+        vector<int> topo;
         while(!q.empty()){
             int node = q.front();
             q.pop();
             topo.push_back(node);
+            
             for(auto it : adj[node]){
-                if(--indegree[it] == 0) q.push(it);
+                indegree[it]--;
+                if(indegree[it] == 0){
+                    q.push(it);
+                }
             }
         }
-        
         return topo;
     }
     
   public:
     string findOrder(vector<string> &words) {
-        int n = 26;
-        vector<vector<int>> adj(n);
-        vector<int> present(26, 0);  // its like vis array
-        int count = 0;
+        int n = 0;
+        vector<int> present(26, 0);
         
         for(auto word : words){
             for(auto ch : word){
                 if(!present[ch - 'a']){
                     present[ch - 'a'] = 1;
-                    count++;
+                    n++;
                 }
             }
         }
+        vector<vector<int>> adj(26);
         
         for(int i=0; i<words.size()-1; i++){
             string s1 = words[i];
@@ -61,17 +64,16 @@ class Solution {
             }
         }
         
-        vector<int> topo = toposort(n, adj);
+        vector<int> topo = topoSort(26, adj);
         
         string ans = "";
-        for(auto it : topo){
-            if(present[it]){
-                ans += char(it + 'a');
+        for(auto idx : topo){
+            if(present[idx]){
+                ans += char(idx + 'a');
             }
         }
         
-        
-        if(ans.size() != count) return "";
+        if(ans.size() != n) return "";
         
         return ans;
     }
