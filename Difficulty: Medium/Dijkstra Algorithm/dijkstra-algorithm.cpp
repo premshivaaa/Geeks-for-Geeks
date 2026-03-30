@@ -14,23 +14,24 @@ class Solution {
         vector<int> dist(V, INT_MAX);
         dist[src] = 0;
         
-        priority_queue< pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>> > mh;
-        mh.push({0, src});
+        set<pair<int, int>> st;
+        st.insert({0, src});
         
-        while(!mh.empty()){
-            int node = mh.top().second;
-            int wt = mh.top().first;
-            mh.pop();
-            
-            if (wt > dist[node]) continue;
+        while(!st.empty()){
+            auto top = *st.begin();
+            int node = top.second;
+            int wt = top.first;
+            st.erase(top);
             
             for(auto it : adj[node]){
                 int edgeWeight = it.second;
                 int adjNode = it.first;
                 
                 if(edgeWeight + wt < dist[adjNode]){
-                    dist[adjNode] = wt + edgeWeight;
-                    mh.push({dist[adjNode], adjNode});
+                    if(dist[adjNode] != INT_MAX) st.erase({dist[adjNode], adjNode});
+                    
+                    dist[adjNode] = edgeWeight + wt;
+                    st.insert({dist[adjNode], adjNode});
                 }
             }
         }
