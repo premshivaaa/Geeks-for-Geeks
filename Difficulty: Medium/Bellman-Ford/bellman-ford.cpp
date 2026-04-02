@@ -32,7 +32,7 @@ class Solution {
         vector<int> ans(V);
         for(int i = 0; i < V; i++){
             if(dist[i] == LLONG_MAX) {
-                ans[i] = 1e8;  // as per problem convention
+                ans[i] = 1e8;
             } 
             else if(dist[i] > INT_MAX) {
                 ans[i] = INT_MAX; // clamp (safety)
