@@ -1,39 +1,69 @@
 // User function Template for C++
 
-class Solution {
+class DisjointSet{
+  public:
+    vector<int> size_arr, rank, parent;
     
-  private:
-    void dfs(int node, vector<vector<int>>& adjList, vector<int>& vis){
-        vis[node] = 1;
+    DisjointSet(int n){
+        parent.resize(n+1);
+        for(int i=0; i<=n; i++) parent[i] = i;
+        rank.resize(n+1, 0);
+        size_arr.resize(n+1, 1);
+    }
+    int findUParent(int node){
+        if(parent[node] == node) return node;
         
-        for(auto it : adjList[node]){
-            if(!vis[it]){
-                dfs(it, adjList, vis);
-            }
+        return parent[node] = findUParent(parent[node]);
+    }
+    void unionByRank(int u, int v){
+        int ultp_u = findUParent(u);
+        int ultp_v = findUParent(v);
+        if(ultp_u == ultp_v) return;
+        
+        if(rank[ultp_u] < rank[ultp_v]){
+            parent[ultp_u] = ultp_v;
+        }
+        else if(rank[ultp_v] < rank[ultp_u]){
+            parent[ultp_v] = ultp_u;
+        }
+        else{
+            parent[ultp_v] = ultp_u;
+            rank[ultp_u]++;
         }
     }
-    
+    void unionBySize(int u, int v){
+        int ultp_u = findUParent(u);
+        int ultp_v = findUParent(v);
+        if(ultp_u == ultp_v) return;
+        
+        if(size_arr[ultp_u] < size_arr[ultp_v]){
+            parent[ultp_u] = ultp_v;
+            size_arr[ultp_v] += size_arr[ultp_u];
+        }
+        else{
+            parent[ultp_v] = ultp_u;
+            size_arr[ultp_u] += size_arr[ultp_v];
+        }
+    }
+};
+
+
+class Solution {
   public:
     int numProvinces(vector<vector<int>> adj, int V) {
-        // code here
-        vector<vector<int>> adjList(V);
+        DisjointSet ds(V);
+        
         for(int i=0; i<V; i++){
             for(int j=0; j<V; j++){
-                if(adj[i][j] == 1 && i!=j){
-                    adjList[i].push_back(j);
-                }
+                if(adj[i][j] == 1) ds.unionBySize(i, j);
             }
         }
         
-        int count = 0;
-        vector<int> vis(V, 0);
-        
+        int counter = 0;
         for(int i=0; i<V; i++){
-            if(vis[i] == 0){
-                count++;
-                dfs(i, adjList, vis);
-            }
+            if(ds.parent[i] == i) counter++;
         }
-        return count;
+        
+        return counter;
     }
 };
