@@ -1,24 +1,24 @@
 class Solution {
   private:
-    int rec(int i, vector<int>& height, vector<int>& dp){
-        if(i == 0) return 0;
+    int rec(int n, vector<int>& height, vector<int>& dp){
+        dp[0] = 0;
+        dp[1] = abs(height[0] - height[1]);
         
-        if(dp[i] != -1) return dp[i];
-        
-        int singleJ = rec(i-1, height, dp) + abs(height[i-1] - height[i]);
-        int doubleJ = INT_MAX;
-        if(i > 1){
-            doubleJ = rec(i-2, height, dp) + abs(height[i-2] - height[i]);
+        for(int i=2; i<=n; i++){
+            int oneJump = dp[i-1] + abs(height[i] - height[i-1]);
+            int twoJump = dp[i-2] + abs(height[i] - height[i-2]);
+
+            dp[i] = min(oneJump, twoJump);
         }
         
-        return dp[i] =min(singleJ, doubleJ);
+        return dp[n];
     }
 
   public:
     int minCost(vector<int>& height) {
         int n = height.size();
         
-        vector<int> dp(n, -1);
+        vector<int> dp(n, 0);
         return rec(n-1, height, dp);
     }
 };
