@@ -1,0 +1,9 @@
+<h2><a href="https://www.geeksforgeeks.org/problems/subsets-with-xor-value2023/1">Count Subsets with Given XOR</a></h2><h3>Difficulty Level : Difficulty: Medium</h3><hr><div class="problems_problem_content__Xm_eO" style="--text-color: var(--problem-text-color);"><p><span style="font-size: 20px;">Given an array of integers <strong>arr[]</strong> and an integer <strong>k</strong>, find the total number of subsets of arr whose<strong> XOR</strong> value is equal to <strong>k</strong>.</span></p>
+<p><span style="font-size: 18px;"><strong>Examples:</strong></span></p>
+<pre><span style="font-size: 18px;"><strong>Input: </strong>arr = [6, 9, 4, 2], k = 6</span><span style="font-size: 18px;">
+<strong>Output: </strong>2
+<strong>Explanation:</strong> </span><span style="font-size: 18px;">The subsets having XOR equal to 6 are {6} and {4, 2}.</span></pre>
+<pre><span style="font-size: 18px;"><strong>Input: </strong>arr = [1, 2, 3, 4, 5], k = 4
+</span><span style="font-size: 18px;"><strong>Output: </strong>4
+<strong>Explanation:</strong> </span><span style="font-size: 18px;">The subsets having XOR equal to 4 are {4}, {1, 5}, {1, 2, 3, 4}, and {2, 3, 5}.</span></pre>
+<p>&nbsp;<span style="font-size: 18px;"><strong>Constraints:</strong><br>1 <span style="font-size: 14pt;">≤</span> arr.size() <span style="font-size: 14pt;">≤</span> 20<br>1 <span style="font-size: 14pt;">≤</span> k <span style="font-size: 14pt;">≤</span> 100<br>0 <span style="font-size: 14pt;">≤</span> arr[i]&nbsp;&nbsp;<span style="font-size: 14pt;">≤</span> 100</span></p></div><br><p><span style=font-size:18px><strong>Topic Tags : </strong><br><code>Dynamic Programming</code>&nbsp;<code>Bit Magic</code>&nbsp;<code>Data Structures</code>&nbsp;<code>Algorithms</code>&nbsp;
